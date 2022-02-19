@@ -15,9 +15,8 @@ import time
 def matrixGenerator(n):
         return np.random.randint(100,999, size=(n, n))
 
-# This splits the given nxn matrix into quarters. 
-# It returns a tuple containing four n/2 x n/2
-# matrices corresponding to a, b, c, d.
+# This splits the given nxn matrix into quarters. It returns a tuple
+# containing four n/2 x n/2 matrices corresponding to a, b, c, d.
 
 def split(matrix):   
     row, col = matrix.shape
@@ -48,14 +47,14 @@ def strassenMultiply(matrixA, matrixB):
     p6 = strassenMultiply(b - d, g + h)   
     p7 = strassenMultiply(a - c, e + f)   
   
-    # This computes the values of the 4 quadrants of the final matrix c. 
+    # This computes the values of the four quadrants of the final matrix c.
     c11 = p5 + p4 - p2 + p6   
     c12 = p1 + p2            
     c21 = p3 + p4             
     c22 = p1 + p5 - p3 - p7   
   
-    # This combines the 4 quadrants into a single matrix
-    # by stacking them horizontally and vertically. 
+    # This combines the four quadrants into a single matrix by stacking
+    # them horizontally and vertically.
     c = np.vstack((np.hstack((c11, c12)), np.hstack((c21, c22))))  
   
     return c
@@ -64,25 +63,53 @@ def strassenMultiply(matrixA, matrixB):
 
 if __name__ == '__main__':
 
+    # This is the output header.
+    print("------------------------------------------------------")
+    print("Mark Barros")
+    print("Implementation of Strassen Matrix Multiplication")
+    print("CS3310 - Design and Analysis of Algorithms")
+    print("Cal Poly Pomona: Spring 2021")
+    print("------------------------------------------------------")
+
+
     product = 0 
     n = 2               # n is both dimensions of each 2D array (matrix).
 
-    while n <= 1024:
+    # This loop provides the option of repeatedly performing matrix
+    # multiplication (doubling the size of the matrices each time).
+    while n <= 2:
+
+        # This generates two randomly populated matrices.
+        MatrixA = matrixGenerator(n)
+        MatrixB = matrixGenerator(n)
+
+        # This outputs to the console the matrices.
+        print("Matrix A:")
+        for row in MatrixA:
+            print(*row)
+
+        print("\nMatrix B:")
+        for row in MatrixB:
+            print(*row)
 
         # This performs a strassenMultiply and times the operation. -----------
         start = time.perf_counter_ns()
-        product = strassenMultiply(matrixGenerator(n), matrixGenerator(n))
+        product = strassenMultiply(MatrixA, MatrixB)
         finish = time.perf_counter_ns()
 
-        # Uncomment the next line to output to the screen the products.
-        # print(product)
+        # This outputs to the console the product.
+        print("\nProduct:")
+        for row in product:
+            print(*row)
 
         # This calculates the elapsed time in seconds.
         period = ((finish - start) * (10**-9))
 
         # This outputs to the screen the length of the matrix sides in each
         # instance and the corresponding time it took to multiply them.
-        print("For n = ", f'{n:3,}', " t = ", f'{period:.3}')
+        print("------------------------------------------------------")
+        print("Exectution Time: For n = ", f'{n:3,}', " t = ", f'{period:.3}')
+        print("------------------------------------------------------")
 
         # This doubles the sides of the matrices to be multiplied
         # after each iteration.
